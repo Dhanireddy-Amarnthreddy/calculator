@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Calculator</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    .calculator {
+        background-color: #87d8a5;
+       
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        padding: 20px;
+        width: 300px;
+        text-align: center;
+    }
+    .calculator h2 {
+        color: #fff;
+    }
+    .screen {
+        background-color: #1c0a0a;
+        color: #fff;
+        font-size: 2em;
+        padding: 10px;
+        text-align: right;
+        margin-bottom: 10px;
+       
+    }
+    .buttons {
+        display: grid;
+        grid-gap: 4px;
+        grid-template-columns: repeat(4, 4fr);
+    }
+    .button {
+        background-color: #f2f2f2;
+        
+        font-size: 2em;
+        padding: 20px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+   
+    .button.operator {
+        background-color: #ff9900;
+        color: white;
+    }
+    .button.operator:hover {
+        background-color: #cc7a00;
+    }
+</style>
+</head>
+<body>
+<div class="calculator">
+    <h2>Digital Calculator</h2>
+    <div class="screen" id="screen">0</div>
+    <div class="buttons">
+        <button class="button" onclick="appendToScreen('7')">7</button>
+        <button class="button" onclick="appendToScreen('8')">8</button>
+        <button class="button" onclick="appendToScreen('9')">9</button>
+        <button class="button operator" onclick="setOperation('+')">+</button>
+        <button class="button" onclick="appendToScreen('4')">4</button>
+        <button class="button" onclick="appendToScreen('5')">5</button>
+        <button class="button" onclick="appendToScreen('6')">6</button>
+        <button class="button operator" onclick="setOperation('-')">-</button>
+        <button class="button" onclick="appendToScreen('1')">1</button>
+        <button class="button" onclick="appendToScreen('2')">2</button>
+        <button class="button" onclick="appendToScreen('3')">3</button>
+        <button class="button operator" onclick="setOperation('*')">*</button>
+        <button class="button" onclick="appendToScreen('0')">0</button>
+        <button class="button" onclick="appendToScreen('.')">.</button>
+        <button class="button operator" onclick="setOperation('/')">/</button>
+        <button class="button operator" onclick="calculate()">=</button>
+        <button class="button operator" onclick="clearScreen()">AC</button>
+    </div>
+</div>
+
+<script>
+    let firstOperand = '';
+    let secondOperand = '';
+    let currentOperation = null;
+    let clearScreenFlag = false;
+
+    function appendToScreen(value) {
+        const screen = document.getElementById('screen');
+        if (clearScreenFlag) {
+            screen.innerText = '';
+            clearScreenFlag = false;
+        }
+        screen.innerText += value;
+    }
+
+    function setOperation(operation) {
+        if (currentOperation !== null) {
+            calculate();
+        }
+        firstOperand = document.getElementById('screen').innerText;
+        currentOperation = operation;
+        clearScreenFlag = true;
+    }
+
+    function calculate() {
+        secondOperand = document.getElementById('screen').innerText;
+        let result;
+        switch (currentOperation) {
+            case '+':
+                result = parseFloat(firstOperand) + parseFloat(secondOperand);
+                break;
+            case '-':
+                result = parseFloat(firstOperand) - parseFloat(secondOperand);
+                break;
+            case '*':
+                result = parseFloat(firstOperand) * parseFloat(secondOperand);
+                break;
+            case '/':
+                result = parseFloat(firstOperand) / parseFloat(secondOperand);
+                break;
+            default:
+                result = 'Error';
+        }
+        document.getElementById('screen').innerText = result;
+        firstOperand = result;
+        currentOperation = null;
+    }
+
+    function clearScreen() {
+        document.getElementById('screen').innerText = '0';
+        firstOperand = '';
+        secondOperand = '';
+        currentOperation = null;
+        clearScreenFlag = false;
+    }
+</script>
+
+</body>
+</html>
